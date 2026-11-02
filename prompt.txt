@@ -1,0 +1,122 @@
+You are a senior AI Engineer specializing in production-grade LLM observability, evaluation, and Python application development.
+
+Build a complete, beginner-friendly but production-conscious project named:
+
+AI Observability & Evaluation Lab
+
+GOAL:
+Build a working AI Knowledge Assistant using the official OpenAI API and Langfuse for LLM observability. The project must demonstrate AI logging, prompt tracing, automated hallucination detection, Precision, Recall, False Positives, False Negatives, and threshold tuning.
+
+TECH STACK:
+- Python 3
+- OpenAI Python SDK
+- Langfuse Python SDK (use the current stable API, not deprecated SDK patterns)
+- python-dotenv
+- scikit-learn
+- Standard Python logging
+
+IMPORTANT:
+- Use the actual OpenAI API. Do not use Gemini.
+- Do not simulate AI responses.
+- Use the current Langfuse OpenAI integration and verify its current SDK API before implementing.
+- Prefer the Langfuse OpenAI wrapper, such as `from langfuse.openai import OpenAI`, if supported by the installed version.
+- Use a model configurable through OPENAI_MODEL in .env. Default to gpt-4.1-mini.
+- Do not hardcode API keys.
+- Never expose secrets in logs or terminal output.
+- Do not use deprecated Langfuse v2 methods such as `trace()`, `generation()`, or `span()`.
+- Keep the implementation simple enough to explain in a 10–15 minute beginner-friendly tutorial.
+
+PROJECT STRUCTURE:
+
+ai-observability-project/
+  main.py
+  evaluator.py
+  requirements.txt
+  .env.example
+  .gitignore
+  README.md
+  logs/
+  evaluation_results/
+
+FUNCTIONALITY:
+
+1. OPENAI KNOWLEDGE ASSISTANT
+- Ask the user a question through the terminal.
+- Use OpenAI chat completions with a system prompt and a supplied reference context.
+- Generate a helpful answer grounded in the provided context.
+- Handle API errors gracefully.
+- Make the model configurable through environment variables.
+
+2. LANGFUSE OBSERVABILITY
+- Integrate OpenAI calls with Langfuse using its current supported OpenAI integration.
+- Automatically capture model calls, input prompts, output responses, latency, usage when available, and errors.
+- Add a top-level trace or observation for the full assistant request if appropriate.
+- Add useful metadata and a trace name.
+- Ensure events are flushed before program exit.
+- Include clear comments explaining the tracing flow.
+- Do not log API keys or sensitive information.
+
+3. AI LOGGING
+- Use Python logging.
+- Write timestamped logs to logs/ai_app.log.
+- Log request start, completion, latency, and errors.
+- Do not expose credentials.
+
+4. AUTOMATED HALLUCINATION EVALUATION
+- Implement a simple automated evaluator that compares an AI answer against the supplied reference context.
+- Use OpenAI as an LLM-as-a-Judge evaluator to assess whether factual claims are supported by the reference context.
+- Ask the judge to return strict JSON with:
+  - is_supported: boolean
+  - explanation: short string
+- Parse and validate the result safely.
+- Handle malformed JSON and API failures.
+- Clearly label this as an automated evaluator, not absolute proof that an answer is factually correct.
+- Keep judge model configurable through OPENAI_JUDGE_MODEL.
+
+5. PRECISION AND RECALL
+- Create a small labeled evaluation dataset with at least 10 examples.
+- Label actual hallucination as 1 and supported answer as 0.
+- Generate detector predictions using the evaluator.
+- Calculate confusion matrix, Precision, Recall, F1 score, False Positives and False Negatives using scikit-learn.
+- Print a clear report.
+- Explain the confusion matrix labels in the README.
+- Save results to evaluation_results/results.json.
+
+6. FALSE POSITIVE REDUCTION
+- Implement configurable confidence/decision threshold if the evaluator returns a numeric support score.
+- Compare at least two thresholds.
+- Print Precision, Recall, False Positives and False Negatives for each threshold.
+- Explain the trade-off: reducing false positives can increase false negatives.
+- Do not pretend that changing a threshold automatically improves the detector's actual accuracy.
+
+7. USER EXPERIENCE
+- `python main.py` starts the AI assistant.
+- `python evaluator.py` runs the evaluation dataset.
+- Print clear, beginner-friendly terminal output.
+- Provide sample questions and reference contexts.
+- Include a clear error if environment variables are missing.
+
+8. README
+Explain:
+- What the project does.
+- What each technology is used for.
+- Installation steps.
+- How to configure .env.
+- How to run the assistant.
+- How to run evaluation.
+- How to view traces in Langfuse.
+- Precision, Recall, FP, FN and threshold trade-offs.
+- Limitations of LLM-as-a-Judge.
+- Security precautions.
+
+QUALITY REQUIREMENTS:
+- Write complete runnable code.
+- Avoid unnecessary architecture and frameworks.
+- No Docker, Redis, database, frontend, or Gemini.
+- Include type hints where practical.
+- Test imports and syntax.
+- Do not claim successful API calls unless they have actually been tested.
+- After implementation, show me the exact commands to run and any setup still required.
+
+First inspect the project directory, then create the complete project. Explain any important implementation decisions briefly.
+
